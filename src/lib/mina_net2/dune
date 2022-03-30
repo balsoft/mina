@@ -19,7 +19,11 @@
    sexplib0
    base.caml
    base.base_internalhash_types
+   stdio
+   stdint
+   splittable_random
    ;; local libraries
+   blake2
    error_json
    child_processes
    file_system
