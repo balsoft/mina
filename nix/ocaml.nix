@@ -110,7 +110,9 @@ let
 
         buildInputs = ocaml-libs ++ external-libs;
         nativeBuildInputs =
-          [ self.dune self.ocamlfind pkgs.capnproto pkgs.removeReferencesTo ]
+          [ self.dune self.ocamlfind pkgs.capnproto pkgs.removeReferencesTo 
+	  (with pkgs; writeShellScriptBin "ld.lld" ''${llvmPackages_13.bintools}/bin/ld.lld "$@"'')
+	  ]
           ++ ocaml-libs;
 
         # todo: slimmed rocksdb

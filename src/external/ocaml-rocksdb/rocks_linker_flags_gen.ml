@@ -14,12 +14,14 @@ let () =
         ; "-lc++abi"
         ; "-lc++" ]
     | "Linux" ->
-        [ "-Wl,--push-state,-E,-whole-archive"
-        ; "-lc"
+        [ sprintf "-L%s" cwd
+        ; "-fuse-ld=lld"
+        ; "-Wl,--whole-archive"
+        (*; "-lc" *)
         ; "-lrocksdb_stubs"
-        ; "-Wl,--pop-state"
+        ; "-Wl,--no-whole-archive"
         ; "-lz"
         ; "-lbz2"
-        ; "-lstdc++" ]
+        (*; "-lstdc++" *)]
     | s ->
         failwith (sprintf "don't know how to link on %s yet" s) )

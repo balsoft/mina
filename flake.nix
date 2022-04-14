@@ -42,7 +42,8 @@
             (import ./nix/overlay.nix)
             (final: prev: {
               ocamlPackages_mina = requireSubmodules (import ./nix/ocaml.nix {
-                inherit inputs pkgs;
+                inherit inputs;
+		pkgs = final;
                 static = final.stdenv.hostPlatform.isStatic;
               });
             })
