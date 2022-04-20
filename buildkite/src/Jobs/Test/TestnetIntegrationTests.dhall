@@ -17,7 +17,8 @@ in Pipeline.build Pipeline.Config::{
     dirtyWhen = [
         S.strictlyStart (S.contains "src"),
         S.strictlyStart (S.contains "dockerfiles"),
-        S.strictlyStart (S.contains "buildkite/src/Jobs/Test/TestnetIntegrationTest")
+        S.strictlyStart (S.contains "buildkite/src/Jobs/Test/TestnetIntegrationTest"),
+        S.strictlyStart (S.contains "buildkite/src/Jobs/Command/TestExecutive")
     ],
     path = "Test",
     name = "TestnetIntegrationTests"
@@ -27,7 +28,9 @@ in Pipeline.build Pipeline.Config::{
     TestExecutive.execute "peers-reliability" dependsOn,
     TestExecutive.execute "chain-reliability" dependsOn,
     TestExecutive.execute "payment" dependsOn,
+    TestExecutive.execute "delegation" dependsOn,
     TestExecutive.execute "gossip-consis" dependsOn,
+    TestExecutive.execute "opt-block-prod" dependsOn,
     TestExecutive.execute "archive-node" dependsOn
 
   ]

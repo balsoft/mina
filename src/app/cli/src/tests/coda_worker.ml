@@ -372,7 +372,7 @@ module T = struct
           ~default:Deferred.unit
       in
       let%bind () = File_system.create_dir conf_dir in
-      O1trace.trace "worker_main" (fun () ->
+      O1trace.thread "worker_main" (fun () ->
           let%bind trust_dir = Unix.mkdtemp (conf_dir ^/ "trust") in
           let trace_database_initialization typ location =
             (* can't use %log because location is passed-in *)
@@ -427,12 +427,15 @@ module T = struct
               ; direct_peers = []
               ; min_connections = 20
               ; max_connections = 50
+              ; pubsub_v1 = N
+              ; pubsub_v0 = RW
               ; validation_queue_size = 150
               ; peer_exchange = true
               ; mina_peer_exchange = true
               ; keypair = Some libp2p_keypair
               ; all_peers_seen_metric = false
               ; known_private_ip_nets = []
+              ; time_controller
               }
           in
           let net_config =
@@ -444,6 +447,7 @@ module T = struct
             ; genesis_ledger_hash =
                 Ledger.merkle_root (Lazy.force Genesis_ledger.t)
             ; constraint_constants
+            ; consensus_constants = precomputed_values.consensus_constants
             ; log_gossip_heard =
                 { snark_pool_diff = true
                 ; transaction_pool_diff = true
